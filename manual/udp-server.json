@@ -1,0 +1,23 @@
+{
+    "proto_name":"udp-server",
+    "transport":"UDP",
+    "header_fields":[
+        {"length":1,"type":"int","name":"Version"},
+        {"length":2,"type":"int","name":"SequenceNumber"},
+        {"length":8,"type":"int","name":"ClientSeconds"},
+        {"length":8,"type":"int","name":"ClientNanoseconds"}
+    ],
+    "message_types":{
+        "TimeRequest":{
+            "condition":"PacketLength == 19",
+            "fields":[]
+        },
+        "TimeResponse":{
+            "condition":"PacketLength == 35",
+            "fields":[
+                {"length":8,"type":"int","name":"ServerSeconds"},
+                {"length":8,"type":"int","name":"ServerNanoseconds"}
+            ]
+        }
+    }
+}

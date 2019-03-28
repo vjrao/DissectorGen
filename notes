@@ -1,0 +1,10 @@
+Important
+- UDP needs a special unlisted field PacketLength to allow filtering protocols
+- Wireshark version affects plugins folder
+- students need to use Decode as
+- Can only analyze stateless protocols
+- change tree:add to add_packet_field
+
+
+Possible features
+- Optional fields for nicer naming capability?

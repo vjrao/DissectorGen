@@ -1,0 +1,35 @@
+{
+    "proto_name":"tcp-server",
+    "transport":"TCP",
+    "header_fields":[
+        {"length":2,"type":"int","name":"MessageType"}
+    ],
+    "message_types":{
+        "Initialization":{
+            "condition":"MessageType == 1",
+            "fields":[
+                {"length":4,"type":"int","name":"N"}
+            ]
+        },
+        "Acknowledgement":{
+            "condition":"MessageType == 2",
+            "fields":[
+                {"length":4,"type":"int","name":"HashResponsesLength"}
+            ]
+        },
+        "HashRequest":{
+            "condition":"MessageType == 3",
+            "fields":[
+                {"length":4,"type":"int","name":"DataLength"},
+                {"length":"DataLength","type":"data","name":"Data"}
+            ]
+        },
+        "HashResponse":{
+            "condition":"MessageType == 4",
+            "fields":[
+                {"length":4,"type":"int","name":"i"},
+                {"length":32,"type":"data","name":"Hash"}
+            ]
+        }
+    }   
+}

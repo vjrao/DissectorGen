@@ -1,0 +1,48 @@
+---
+# The protocol name
+name: tcp_server
+# The transport protocol (TCP or UDP)
+transport: TCP
+# A list of prefix fields present in any message type
+header_fields:
+    # A field, composed of length in bytes, type (int or data), and name
+    - {length: 2, type: int, name: MessageType}
+
+# A dictionary of the supported message types
+message_types:
+
+    # One message type, named "Initialization"
+    Initialization:
+        # Each message type needs a condition (substituted directly into Lua),
+        # which is used to detect the message type. In this case, the value of
+        # the previously parsed MessageType field is used in the condition
+        condition: MessageType == 1
+        # A list of fields specific to this message type
+        fields:
+            - {length: 4, type: int, name: N}
+
+    # Another message type, named "Acknowledgement"
+    Acknowledgement:
+        # A message will only be parsed as Acknowledgement if the field
+        # MessageType is equal to 2
+        condition: MessageType == 2
+        fields:
+            - {length: 4, type: int, name: HashResponsesLength}
+
+    HashRequest:
+        condition: MessageType == 3
+        # The HashRequest message is variable-length. This format handles this
+        # by allowing the value of previously parsed attributes to be used for
+        # the size of following fields.
+        fields:
+            # The DataLength field is parsed first as a constant 4 bytes
+            - {length: 4, type: int, name: DataLength}
+            # The parsed value of DataLength is used to parse the Data field
+            - {length: DataLength, type: data, name: Data}
+
+    HashResponse:
+        condition: MessageType == 4
+        fields:
+            - {length: 4, type: int, name: i}
+            - {length: 32, type: data, name: Hash}
+...
